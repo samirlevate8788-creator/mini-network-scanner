@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Network Scanner | Live Security Console</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen font-sans antialiased">
+  <!-- Nav -->
+  <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <span class="flex h-3 w-3 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+        </span>
+        <span class="font-mono font-bold text-lg text-emerald-400">Mini Network Scanner</span>
+        <span class="text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-mono">LIVE WEB CONSOLE</span>
+      </div>
+      <a href="https://github.com/samirlevate8788-creator/mini-network-scanner" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3.5 py-2 rounded-lg transition">
+        <i class="fa-brands fa-github"></i> GitHub Repo
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <!-- Hero -->
+    <div class="text-center space-y-3">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white">
+        High-Performance Python <span class="text-emerald-400">Network & Port Scanner</span>
+      </h1>
+      <p class="text-gray-400 text-sm max-w-2xl mx-auto">
+        Multi-threaded socket network scanner to audit local & remote hosts, detect open services, assess security posture, and generate actionable vulnerability reports.
+      </p>
+    </div>
+
+    <!-- Live Scanner Simulation Console -->
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-800 pb-4">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-terminal text-emerald-400"></i> Interactive Scan Simulator
+          </h2>
+          <p class="text-xs text-gray-400">Configure target IP and port range to simulate the Python scanner.</p>
+        </div>
+        <button id="runScanBtn" onclick="runSimulation()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-black font-bold text-xs rounded-lg transition flex items-center gap-2">
+          <i class="fa-solid fa-play"></i> Start Scan
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 mb-1">Target Host / IP</label>
+          <input id="targetIp" type="text" value="192.168.1.1" class="w-full bg-gray-950 border border-gray-800 rounded-lg p-2.5 text-sm text-gray-200 font-mono focus:border-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 mb-1">Port Range</label>
+          <select id="portRange" class="w-full bg-gray-950 border border-gray-800 rounded-lg p-2.5 text-sm text-gray-200 font-mono focus:border-emerald-500 focus:outline-none">
+            <option value="top20">Top 20 Common Ports (Fast)</option>
+            <option value="web">Web & Database (80, 443, 3306, 5432, 8080)</option>
+            <option value="1000">Standard (1 - 1000)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 mb-1">Scan Profile</label>
+          <select id="scanProfile" class="w-full bg-gray-950 border border-gray-800 rounded-lg p-2.5 text-sm text-gray-200 font-mono focus:border-emerald-500 focus:outline-none">
+            <option value="safe">TCP Connect (Safe)</option>
+            <option value="aggressive">Aggressive Multi-threaded</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Terminal Output Box -->
+      <div class="bg-black/90 border border-gray-800 rounded-xl p-4 font-mono text-xs text-gray-300 min-h-[220px] max-h-[350px] overflow-y-auto space-y-1">
+        <div class="text-gray-500"># Mini Network Security Console - Ready</div>
+        <div class="text-gray-500"># Click "Start Scan" to run a scan simulation.</div>
+        <div id="termLogs"></div>
+      </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 space-y-2">
+        <div class="text-emerald-400 font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-bolt"></i> Multi-Threaded Scanning
+        </div>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          Concurrent worker pool utilizing Python's <code class="text-emerald-300">threading</code> and non-blocking sockets for lightning-fast port inspection.
+        </p>
+      </div>
+
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 space-y-2">
+        <div class="text-blue-400 font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-file-lines"></i> Automated Audit Reports
+        </div>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          Generates structured timestamped audit logs (<code class="text-blue-300">scan_report.txt</code>) with risk level scoring and remediation guidance.
+        </p>
+      </div>
+
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 space-y-2">
+        <div class="text-purple-400 font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved"></i> Vulnerability Assessment
+        </div>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          Cross-references exposed listening ports against known service signatures (SSH, Telnet, HTTP, FTP, RDP, MySQL).
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Run Guide -->
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="space-y-1 text-center md:text-left">
+        <h3 class="font-bold text-white text-sm">Run locally in your terminal:</h3>
+        <p class="font-mono text-xs text-emerald-400">git clone https://github.com/samirlevate8788-creator/mini-network-scanner.git &amp;&amp; python scanner.py</p>
+      </div>
+      <a href="https://github.com/samirlevate8788-creator/mini-network-scanner" target="_blank" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 rounded-lg text-xs font-semibold">
+        View on GitHub
+      </a>
+    </div>
+  </main>
+
+  <footer class="border-t border-gray-800 py-6 text-center text-xs text-gray-500">
+    Mini Network Scanner &middot; Created by <a href="https://github.com/samirlevate8788-creator" class="text-emerald-400 hover:underline">Samir Levate</a>
+  </footer>
+
+  <script>
+    function runSimulation() {
+      const target = document.getElementById('targetIp').value.trim();
+      const logs = document.getElementById('termLogs');
+      const btn = document.getElementById('runScanBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Scanning...';
+      logs.innerHTML = '';
+
+      const steps = [
+        `[+] Initializing scan on target: ${target}`,
+        `[+] Resolving hostname and testing ping latency: 12ms (UP)`,
+        `[+] Worker thread pool initialized: 100 concurrent workers`,
+        `[+] Scanning ports...`,
+        `[+] Port 22/tcp (SSH): OPEN - OpenSSH 8.9p1`,
+        `[+] Port 80/tcp (HTTP): OPEN - nginx/1.18.0`,
+        `[+] Port 443/tcp (HTTPS): OPEN - SSL/TLS Certificate Valid`,
+        `[+] Port 3306/tcp (MySQL): FILTERED`,
+        `[+] Port 8080/tcp (HTTP-Proxy): OPEN - Node.js Express API`,
+        `============================================================`,
+        `             MINI NETWORK SECURITY REPORT`,
+        `============================================================`,
+        `Target       : ${target}`,
+        `Status       : UP`,
+        `Open Ports   : 4 detected (22, 80, 443, 8080)`,
+        `Risk Level   : MEDIUM (Exposed SSH and HTTP API)`,
+        `Scan Time    : 0.85 seconds`,
+        `============================================================`,
+        `Scan completed successfully. Report saved to scan_report.txt`
+      ];
+
+      let idx = 0;
+      const interval = setInterval(() => {
+        if (idx < steps.length) {
+          const div = document.createElement('div');
+          if (steps[idx].includes('OPEN')) {
+            div.className = 'text-emerald-400 font-bold';
+          } else if (steps[idx].includes('MEDIUM')) {
+            div.className = 'text-amber-400 font-bold';
+          } else if (steps[idx].includes('=')) {
+            div.className = 'text-gray-500';
+          } else {
+            div.className = 'text-gray-300';
+          }
+          div.textContent = steps[idx];
+          logs.appendChild(div);
+          logs.scrollTop = logs.scrollHeight;
+          idx++;
+        } else {
+          clearInterval(interval);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-play"></i> Start Scan';
+        }
+      }, 120);
+    }
+  </script>
+</body>
+</html>
